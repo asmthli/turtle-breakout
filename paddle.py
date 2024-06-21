@@ -15,7 +15,7 @@ class Paddle(t.Turtle):
         self.pixel_height = BASE_PIXEL_HEIGHT
         self.set_width()
 
-        self.speed = 1
+        self.velocity = 0
 
         self.screen_width = None
         self.screen_height = None
@@ -48,15 +48,15 @@ class Paddle(t.Turtle):
     def stop_moving_right(self):
         self.directions_pressed.remove("RIGHT")
 
-    def move(self):
+    def move(self, acceleration):
         if not self.directions_pressed:
-            distance_travelled = 0
+            self.velocity = 0
         elif self.directions_pressed[-1] == "LEFT":
-            distance_travelled = -1 * self.speed * MOVE_INCREMENT
+            self.velocity -= acceleration
         elif self.directions_pressed[-1] == "RIGHT":
-            distance_travelled = self.speed * MOVE_INCREMENT
-        else:
-            distance_travelled = 0
+            self.velocity += acceleration
+
+        distance_travelled = self.velocity * MOVE_INCREMENT
 
         x_coord = self.xcor() + distance_travelled
         self.setx(x_coord)

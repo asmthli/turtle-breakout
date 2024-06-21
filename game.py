@@ -24,9 +24,10 @@ class Game:
         self.paddle.set_initial_pos()
 
     def game_loop(self):
-        self.paddle.move()
+        self.paddle.move(acceleration=0.35)
         self.ball.move(self.screen.screen.window_width(),
                        self.screen.screen.window_height())
+        self.ball.check_paddle_collision(self.paddle, 0.4)
 
         self.screen.screen.update()
 
