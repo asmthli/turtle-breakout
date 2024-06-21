@@ -20,7 +20,7 @@ class Paddle(t.Turtle):
         self.screen_width = None
         self.screen_height = None
 
-        self.direction = None
+        self.directions_pressed = []
 
     def set_initial_pos(self):
         self.goto(0, -250)
@@ -34,20 +34,26 @@ class Paddle(t.Turtle):
         self.pixel_width = BASE_PIXEL_WIDTH * stretch_len_factor
 
     def start_moving_left(self):
-        self.direction = "LEFT"
+        # Check is necessary because of OS-level key repeating.
+        if "LEFT" not in self.directions_pressed:
+            self.directions_pressed.append("LEFT")
 
     def start_moving_right(self):
-        self.direction = "RIGHT"
+        if "RIGHT" not in self.directions_pressed:
+            self.directions_pressed.append("RIGHT")
 
-    def stop_moving(self):
-        self.direction = None
+    def stop_moving_left(self):
+        self.directions_pressed.remove("LEFT")
+
+    def stop_moving_right(self):
+        self.directions_pressed.remove("RIGHT")
 
     def move(self):
-        if self.direction is None:
+        if not self.directions_pressed:
             distance_travelled = 0
-        elif self.direction == "LEFT":
+        elif self.directions_pressed[-1] == "LEFT":
             distance_travelled = -1 * self.speed * MOVE_INCREMENT
-        elif self.direction == "RIGHT":
+        elif self.directions_pressed[-1] == "RIGHT":
             distance_travelled = self.speed * MOVE_INCREMENT
         else:
             distance_travelled = 0
