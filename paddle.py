@@ -49,6 +49,11 @@ class Paddle(t.Turtle):
         self.directions_pressed.remove("RIGHT")
 
     def move(self, acceleration):
+        if self.check_right_wall_collision():
+            self.velocity = 0
+        elif self.check_left_wall_collision():
+            self.velocity = 0
+
         if not self.directions_pressed:
             self.velocity = 0
         elif self.directions_pressed[-1] == "LEFT":
@@ -58,5 +63,16 @@ class Paddle(t.Turtle):
 
         distance_travelled = self.velocity * MOVE_INCREMENT
 
-        x_coord = self.xcor() + distance_travelled
-        self.setx(x_coord)
+        self.setx(self.xcor() + distance_travelled)
+
+        # Stop the player from moving past the walls.
+        if self.check_right_wall_collision():
+            self.setx(self.screen_width // 2 - self.pixel_width // 2)
+        elif self.check_left_wall_collision():
+            self.setx(-1 * (self.screen_width // 2 - self.pixel_width // 2))
+
+    def check_right_wall_collision(self):
+        return self.xcor() + self.pixel_width // 2 >= self.screen_width // 2
+
+    def check_left_wall_collision(self):
+        return self.xcor() - self.pixel_width // 2 <= -1 * self.screen_width // 2
