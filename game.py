@@ -25,7 +25,8 @@ class Game:
 
     def game_loop(self):
         self.paddle.move()
-        self.ball.move()
+        self.ball.move(self.screen.screen.window_width(),
+                       self.screen.screen.window_height())
 
         self.screen.screen.update()
 
