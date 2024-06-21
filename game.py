@@ -1,6 +1,7 @@
 import time
 import turtle as t
 
+from ball import Ball
 from paddle import Paddle
 from screen_wrapper import ScreenWrapper
 
@@ -10,6 +11,7 @@ GAME_TICK_INTERVAL = 10  # milliseconds
 class Game:
     def __init__(self):
         self.paddle = Paddle()
+        self.ball = Ball()
 
         self.screen = ScreenWrapper()
         self.screen.setup_input_handlers(self.paddle)
@@ -23,6 +25,7 @@ class Game:
 
     def game_loop(self):
         self.paddle.move()
+        self.ball.move()
 
         self.screen.screen.update()
 
