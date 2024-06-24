@@ -1,4 +1,6 @@
 import turtle as t
+import random
+
 
 MOVE_INCREMENT = 2
 BASE_PIXEL_WIDTH = 20
@@ -10,14 +12,21 @@ class Ball(t.Turtle):
         super().__init__()
         self.penup()
 
-        self.shape("square")
+        self.shape("circle")
         self.color("red")
 
         self.pixel_width = BASE_PIXEL_WIDTH
         self.pixel_height = BASE_PIXEL_HEIGHT
 
         self.x_velocity = 0
-        self.y_velocity = 2
+        self.y_velocity = -2
+
+    def random_reset(self, window_width):
+        x = random.randint(-1 * window_width // 2 + self.pixel_width, window_width // 2 - self.pixel_width)
+        self.setx(x)
+        self.sety(30)
+
+        self.x_velocity = random.randint(-4, 4)
 
     def move(self, screen_width, screen_height):
         x_coord = self.xcor() + self.x_velocity * MOVE_INCREMENT
@@ -37,6 +46,9 @@ class Ball(t.Turtle):
             self.x_plane_bounce()
 
         self.goto(x_coord, y_coord)
+
+    def is_off_screen(self, screen_height):
+        return self.ycor() < -1 * screen_height // 2
 
     def check_paddle_collision(self, paddle, momentum_coefficient):
         if abs(self.xcor() - paddle.xcor()) <= (self.pixel_width + paddle.pixel_width) // 2:

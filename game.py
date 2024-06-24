@@ -1,8 +1,5 @@
-import time
-import turtle as t
-
 from ball import Ball
-from brick import RedBrick, YellowBrick, BASE_PIXEL_HEIGHT, OrangeBrick, GreenBrick
+from brick import RedBrick, YellowBrick, OrangeBrick, GreenBrick
 from paddle import Paddle
 from screen_wrapper import ScreenWrapper
 from scoreboard import Scoreboard
@@ -33,6 +30,8 @@ class Game:
         self.life_counter = LifeCounter(self.screen.screen.window_width(),
                                         self.screen.screen.window_height())
 
+        self.ball.random_reset(self.screen.screen.window_width())
+
     def game_loop(self):
         self.paddle.move(acceleration=0.35)
         self.ball.move(self.screen.screen.window_width(),
@@ -45,6 +44,10 @@ class Game:
                 self.score_board.score += brick.points
                 brick.hide()
                 break
+
+        if self.ball.is_off_screen(self.screen.screen.window_height()):
+            self.life_counter.lives -= 1
+            self.ball.random_reset(self.screen.screen.window_width())
 
         self.score_board.draw()
         self.life_counter.draw()
