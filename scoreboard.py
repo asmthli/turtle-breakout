@@ -12,7 +12,7 @@ class Scoreboard(t.Turtle):
         self.hideturtle()
         self.set_position(screen_width, screen_height)
 
-    def draw_score(self):
+    def draw(self):
         self.clear()
         self.write(f"Score: {self.score}",
                    font=("Courier", 18, "italic"))

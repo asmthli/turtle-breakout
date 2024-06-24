@@ -6,6 +6,7 @@ from brick import RedBrick, YellowBrick, BASE_PIXEL_HEIGHT, OrangeBrick, GreenBr
 from paddle import Paddle
 from screen_wrapper import ScreenWrapper
 from scoreboard import Scoreboard
+from life_counter import LifeCounter
 
 GAME_TICK_INTERVAL = 1  # milliseconds
 
@@ -29,6 +30,8 @@ class Game:
 
         self.score_board = Scoreboard(self.screen.screen.window_width(),
                                       self.screen.screen.window_height())
+        self.life_counter = LifeCounter(self.screen.screen.window_width(),
+                                        self.screen.screen.window_height())
 
     def game_loop(self):
         self.paddle.move(acceleration=0.35)
@@ -43,7 +46,8 @@ class Game:
                 brick.hide()
                 break
 
-        self.score_board.draw_score()
+        self.score_board.draw()
+        self.life_counter.draw()
 
         self.screen.screen.update()
 
