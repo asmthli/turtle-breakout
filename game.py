@@ -4,6 +4,7 @@ from paddle import Paddle
 from screen_wrapper import ScreenWrapper
 from scoreboard import Scoreboard
 from life_counter import LifeCounter
+from game_over_display import GameOverDisplay
 
 GAME_TICK_INTERVAL = 1  # milliseconds
 
@@ -32,6 +33,8 @@ class Game:
 
         self.ball.random_reset(self.screen.screen.window_width())
 
+        self.game_over_display = GameOverDisplay()
+
     def game_loop(self):
         self.paddle.move(acceleration=0.35)
         self.ball.move(self.screen.screen.window_width(),
@@ -40,7 +43,6 @@ class Game:
 
         for brick in self.bricks:
             if brick.check_ball_collision(self.ball):
-                self.bricks.remove(brick)
                 self.score_board.score += brick.points
                 brick.hide()
                 break
@@ -51,6 +53,14 @@ class Game:
 
         self.score_board.draw()
         self.life_counter.draw()
+
+        if self.life_counter.lives == 2:
+            self.game_over_display.show()
+            answer = self.screen.screen.textinput("Game over!", "Play again?: [y/n]")
+            if answer == "y":
+                self.reset()
+            else:
+                self.screen.screen.bye()
 
         self.screen.screen.update()
 
@@ -95,6 +105,16 @@ class Game:
 
     def start_game_loop(self):
         self.screen.screen.mainloop()
+
+    def reset(self):
+        self.game_over_display.clear()
+        self.screen.screen.listen()
+        self.score_board.score = 0
+        self.life_counter.lives = 3
+        self.ball.random_reset(self.screen.screen.window_width())
+
+        for brick in self.bricks:
+            brick.reset()
 
 
 if __name__ == "__main__":

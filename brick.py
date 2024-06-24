@@ -15,6 +15,9 @@ class Brick(t.Turtle):
         self.pixel_height = BASE_PIXEL_HEIGHT
         self.set_size(width, height)
 
+        self.original_x = x
+        self.original_y = y
+
         self.penup()
         self.setx(x)
         self.sety(y)
@@ -28,6 +31,9 @@ class Brick(t.Turtle):
 
     def hide(self):
         self.goto(x=10000, y=10000)
+
+    def reset(self):
+        self.goto(x=self.original_x, y=self.original_y)
         
     def check_ball_collision(self, ball: Ball):
         if abs(self.xcor() - ball.xcor()) <= (self.pixel_width + ball.pixel_width) // 2:
