@@ -24,7 +24,7 @@ class Game:
 
         self.paddle.set_initial_pos()
 
-        self.bricks = self.create_bricks(columns=14, gap_width=3)
+        self.bricks = self.create_bricks(columns=14, rows=8, gap_width=3)
 
         self.score_board = Scoreboard(self.screen.screen.window_width(),
                                       self.screen.screen.window_height())
@@ -64,43 +64,34 @@ class Game:
 
         self.screen.screen.update()
 
-    def create_bricks(self, columns, gap_width):
+    def create_bricks(self, rows, columns, gap_width):
         w = self.screen.screen.window_width()
         g = gap_width
         brick_width = (w - g * (columns - 1)) // columns
 
-        x_coord = -1 * w // 2 + brick_width // 2
+        x_origin = -1 * w // 2 + brick_width // 2
+        y_origin = 245
+
         bricks = []
-
-        y_values = []
-
-        y_value = 260
-        for i in range(8):
-            y_value -= (gap_width + 15)
-            y_values.append(y_value)
-
         for i in range(columns):
-            brick = RedBrick(x=x_coord, y=y_values[0], width=brick_width, height=15)
-            bricks.append(brick)
-            brick = RedBrick(x=x_coord, y=y_values[1], width=brick_width, height=15)
-            bricks.append(brick)
+            for j in range(rows):
+                x_value = x_origin + i * (brick_width + gap_width)
+                y_value = y_origin - j * (gap_width + 15)
 
-            brick = OrangeBrick(x=x_coord, y=y_values[2], width=brick_width, height=15)
-            bricks.append(brick)
-            brick = OrangeBrick(x=x_coord, y=y_values[3], width=brick_width, height=15)
-            bricks.append(brick)
+                if j < 2:
+                    brick_type = RedBrick
+                elif j < 4:
+                    brick_type = OrangeBrick
+                elif j < 6:
+                    brick_type = GreenBrick
+                else:
+                    brick_type = YellowBrick
 
-            brick = GreenBrick(x=x_coord, y=y_values[4], width=brick_width, height=15)
-            bricks.append(brick)
-            brick = GreenBrick(x=x_coord, y=y_values[5], width=brick_width, height=15)
-            bricks.append(brick)
-
-            brick = YellowBrick(x=x_coord, y=y_values[6], width=brick_width, height=15)
-            bricks.append(brick)
-            brick = YellowBrick(x=x_coord, y=y_values[7], width=brick_width, height=15)
-            bricks.append(brick)
-
-            x_coord += brick_width + gap_width
+                brick = brick_type(x=x_value,
+                                   y=y_value,
+                                   width=brick_width,
+                                   height=15)
+                bricks.append(brick)
         return bricks
 
     def start_game_loop(self):
