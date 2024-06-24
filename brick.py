@@ -38,7 +38,18 @@ class Brick(t.Turtle):
     def check_ball_collision(self, ball: Ball):
         if abs(self.xcor() - ball.xcor()) <= (self.pixel_width + ball.pixel_width) // 2:
             if abs(self.ycor() - ball.ycor()) <= (self.pixel_height + ball.pixel_height) // 2:
-                ball.x_plane_bounce()
+                if ball.ycor() > self.ycor():
+                    ball.x_plane_bounce()
+                    ball.sety(self.ycor() + ball.pixel_height / 2 + self.pixel_height / 2)
+                elif ball.ycor() < self.ycor():
+                    ball.x_plane_bounce()
+                    ball.sety(self.ycor() - ball.pixel_height / 2 - self.pixel_height / 2)
+                elif ball.xcor() < self.xcor():
+                    ball.y_plane_bounce()
+                    ball.setx(self.xcor() - ball.pixel_width / 2 - self.pixel_width / 2)
+                elif ball.xcor() > self.xcor():
+                    ball.y_plane_bounce()
+                    ball.setx(self.xcor() + ball.pixel_width / 2 + self.pixel_width / 2)
                 return True
         return False
 

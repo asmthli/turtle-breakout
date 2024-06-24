@@ -25,6 +25,9 @@ class Paddle(t.Turtle):
     def set_initial_pos(self):
         self.goto(0, -250)
 
+    def paddle_reset(self):
+        self.directions_pressed = []
+
     def set_screen_size(self, width, height):
         self.screen_width = width
         self.screen_height = height

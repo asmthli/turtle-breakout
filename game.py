@@ -103,6 +103,7 @@ class Game:
         self.score_board.score = 0
         self.life_counter.lives = 3
         self.ball.random_reset(self.screen.screen.window_width())
+        self.paddle.paddle_reset()
 
         for brick in self.bricks:
             brick.reset()
