@@ -3,6 +3,9 @@ import random
 
 
 MOVE_INCREMENT = 2
+SPEED_LIMIT = 4
+
+
 BASE_PIXEL_WIDTH = 20
 BASE_PIXEL_HEIGHT = 20
 
@@ -57,7 +60,9 @@ class Ball(t.Turtle):
 
     def paddle_bounce(self, paddle, momentum_coefficient):
         self.x_plane_bounce()
-        self.x_velocity += momentum_coefficient * paddle.velocity
+        speed_boost = momentum_coefficient * paddle.velocity
+        if abs(self.x_velocity + speed_boost) <= SPEED_LIMIT:
+            self.x_velocity += speed_boost
 
     def x_plane_bounce(self):
         self.y_velocity *= -1
