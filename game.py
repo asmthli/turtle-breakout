@@ -66,6 +66,7 @@ class Game:
             self.life_counter.draw()
 
         if self.life_counter.lives == 2:
+            self.ball.hide()
             self.game_over_display.show()
             self.game_over = True
 

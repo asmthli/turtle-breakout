@@ -32,6 +32,9 @@ class Ball(t.Turtle):
 
         self.x_velocity = random.randint(-TOP_INITIAL_SPEED, TOP_INITIAL_SPEED)
 
+    def hide(self):
+        self.goto(10000, 10000)
+
     def move(self, screen_width, screen_height):
         x_coord = self.xcor() + self.x_velocity * MOVE_INCREMENT
         y_coord = self.ycor() + self.y_velocity * MOVE_INCREMENT
