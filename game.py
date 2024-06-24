@@ -6,7 +6,7 @@ from brick import RedBrick, YellowBrick, BASE_PIXEL_HEIGHT, OrangeBrick, GreenBr
 from paddle import Paddle
 from screen_wrapper import ScreenWrapper
 
-GAME_TICK_INTERVAL = 10  # milliseconds
+GAME_TICK_INTERVAL = 1  # milliseconds
 
 
 class Game:
@@ -32,6 +32,12 @@ class Game:
                        self.screen.screen.window_height())
         self.ball.check_paddle_collision(self.paddle, 0.4)
 
+        for brick in self.bricks:
+            if brick.check_ball_collision(self.ball):
+                self.bricks.remove(brick)
+                brick.hide()
+                break
+
         self.screen.screen.update()
 
     def create_bricks(self, columns, gap_width):
@@ -46,7 +52,7 @@ class Game:
 
         y_value = 280
         for i in range(8):
-            y_value -= (gap_width + BASE_PIXEL_HEIGHT)
+            y_value -= (gap_width + 15)
             y_values.append(y_value)
 
         for i in range(columns):

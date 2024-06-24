@@ -1,5 +1,7 @@
 import turtle as t
 
+from ball import Ball
+
 BASE_PIXEL_WIDTH = 20
 BASE_PIXEL_HEIGHT = 20
 
@@ -23,6 +25,16 @@ class Brick(t.Turtle):
         self.shapesize(stretch_len=width_factor, stretch_wid=height_factor)
         self.pixel_width = width
         self.pixel_height = height
+
+    def hide(self):
+        self.goto(x=10000, y=10000)
+        
+    def check_ball_collision(self, ball: Ball):
+        if abs(self.xcor() - ball.xcor()) <= (self.pixel_width + ball.pixel_width) // 2:
+            if abs(self.ycor() - ball.ycor()) <= (self.pixel_height + ball.pixel_height) // 2:
+                ball.x_plane_bounce()
+                return True
+        return False
 
 
 class RedBrick(Brick):
