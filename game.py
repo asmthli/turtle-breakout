@@ -5,6 +5,7 @@ from ball import Ball
 from brick import RedBrick, YellowBrick, BASE_PIXEL_HEIGHT, OrangeBrick, GreenBrick
 from paddle import Paddle
 from screen_wrapper import ScreenWrapper
+from scoreboard import Scoreboard
 
 GAME_TICK_INTERVAL = 1  # milliseconds
 
@@ -26,6 +27,9 @@ class Game:
 
         self.bricks = self.create_bricks(columns=14, gap_width=3)
 
+        self.score_board = Scoreboard(self.screen.screen.window_width(),
+                                      self.screen.screen.window_height())
+
     def game_loop(self):
         self.paddle.move(acceleration=0.35)
         self.ball.move(self.screen.screen.window_width(),
@@ -35,8 +39,11 @@ class Game:
         for brick in self.bricks:
             if brick.check_ball_collision(self.ball):
                 self.bricks.remove(brick)
+                self.score_board.score += brick.points
                 brick.hide()
                 break
+
+        self.score_board.draw_score()
 
         self.screen.screen.update()
 
@@ -50,7 +57,7 @@ class Game:
 
         y_values = []
 
-        y_value = 280
+        y_value = 260
         for i in range(8):
             y_value -= (gap_width + 15)
             y_values.append(y_value)
