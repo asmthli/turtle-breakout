@@ -33,8 +33,8 @@ class Paddle(t.Turtle):
 
     def reduce_size(self):
         current_width_factor = self.shapesize()[1]
-        self.set_width(stretch_len_factor=current_width_factor * 0.75)
-        self.size *= 0.75
+        self.set_width(stretch_len_factor=current_width_factor * 0.85)
+        self.size *= 0.85
 
     def set_screen_size(self, width, height):
         self.screen_width = width

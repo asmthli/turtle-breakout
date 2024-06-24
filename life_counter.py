@@ -2,9 +2,9 @@ import turtle as t
 
 
 class LifeCounter(t.Turtle):
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, initial_lives):
         super().__init__()
-        self.lives = 3
+        self.lives = initial_lives
 
         self.color("white")
 

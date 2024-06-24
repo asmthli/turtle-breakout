@@ -8,8 +8,10 @@ from game_over_display import GameOverDisplay
 
 GAME_TICK_INTERVAL = 1  # milliseconds
 
-LEVEL_2_SCORE = 3
-LEVEL_3_SCORE = 5
+MAXIMUM_SCORE = 448
+LEVEL_2_SCORE = round(MAXIMUM_SCORE * 1/2)
+LEVEL_3_SCORE = round(MAXIMUM_SCORE * 3/4)
+LIVES = 5
 
 
 class Game:
@@ -32,7 +34,8 @@ class Game:
         self.score_board = Scoreboard(self.screen.screen.window_width(),
                                       self.screen.screen.window_height())
         self.life_counter = LifeCounter(self.screen.screen.window_width(),
-                                        self.screen.screen.window_height())
+                                        self.screen.screen.window_height(),
+                                        initial_lives=LIVES)
 
         self.ball.random_reset(self.screen.screen.window_width())
 
@@ -65,11 +68,11 @@ class Game:
             self.score_board.draw()
             self.life_counter.draw()
 
-        if self.life_counter.lives == 2:
+        if self.life_counter.lives == 0:
             self.handle_loss()
             if self.screen.space_bar_pressed:
                 self.reset()
-        elif self.score_board.score > 3:
+        elif self.score_board.score == MAXIMUM_SCORE:
             self.handle_win()
             if self.screen.space_bar_pressed:
                 self.reset()
@@ -123,7 +126,7 @@ class Game:
         self.game_over_display.clear()
         self.screen.screen.listen()
         self.score_board.score = 0
-        self.life_counter.lives = 3
+        self.life_counter.lives = LIVES
         self.ball.random_reset(self.screen.screen.window_width())
         self.paddle.paddle_reset()
 
