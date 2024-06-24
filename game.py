@@ -66,10 +66,11 @@ class Game:
             self.life_counter.draw()
 
         if self.life_counter.lives == 2:
-            self.ball.hide()
-            self.game_over_display.show()
-            self.game_over = True
-
+            self.handle_loss()
+            if self.screen.space_bar_pressed:
+                self.reset()
+        elif self.score_board.score > 3:
+            self.handle_win()
             if self.screen.space_bar_pressed:
                 self.reset()
 
@@ -107,6 +108,16 @@ class Game:
 
     def start_game_loop(self):
         self.screen.screen.mainloop()
+
+    def handle_win(self):
+        self.ball.hide()
+        self.game_over_display.show_win()
+        self.game_over = True
+
+    def handle_loss(self):
+        self.ball.hide()
+        self.game_over_display.show_loss()
+        self.game_over = True
 
     def reset(self):
         self.game_over_display.clear()
