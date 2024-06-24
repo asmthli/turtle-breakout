@@ -13,7 +13,9 @@ class Paddle(t.Turtle):
         self.shape("square")
         self.pixel_width = BASE_PIXEL_WIDTH
         self.pixel_height = BASE_PIXEL_HEIGHT
-        self.set_width()
+        self.initial_width = 6
+        self.set_width(self.initial_width)
+        self.size = 1
 
         self.velocity = 0
 
@@ -27,12 +29,19 @@ class Paddle(t.Turtle):
 
     def paddle_reset(self):
         self.directions_pressed = []
+        self.size = 1
+        self.set_width(self.initial_width)
+
+    def reduce_size(self):
+        current_width_factor = self.shapesize()[1]
+        self.set_width(stretch_len_factor=current_width_factor * 0.75)
+        self.size *= 0.75
 
     def set_screen_size(self, width, height):
         self.screen_width = width
         self.screen_height = height
 
-    def set_width(self, stretch_len_factor=6):
+    def set_width(self, stretch_len_factor):
         self.shapesize(stretch_len=stretch_len_factor)
         self.pixel_width = BASE_PIXEL_WIDTH * stretch_len_factor
 

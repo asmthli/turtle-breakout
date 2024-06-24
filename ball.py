@@ -3,6 +3,7 @@ import random
 
 
 MOVE_INCREMENT = 2
+TOP_INITIAL_SPEED = 2
 SPEED_LIMIT = 4
 
 
@@ -29,7 +30,7 @@ class Ball(t.Turtle):
         self.setx(x)
         self.sety(30)
 
-        self.x_velocity = random.randint(-4, 4)
+        self.x_velocity = random.randint(-TOP_INITIAL_SPEED, TOP_INITIAL_SPEED)
 
     def move(self, screen_width, screen_height):
         x_coord = self.xcor() + self.x_velocity * MOVE_INCREMENT

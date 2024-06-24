@@ -8,6 +8,9 @@ from game_over_display import GameOverDisplay
 
 GAME_TICK_INTERVAL = 1  # milliseconds
 
+LEVEL_2_SCORE = 3
+LEVEL_3_SCORE = 5
+
 
 class Game:
     def __init__(self):
@@ -40,6 +43,11 @@ class Game:
         self.ball.move(self.screen.screen.window_width(),
                        self.screen.screen.window_height())
         self.ball.check_paddle_collision(self.paddle, 0.4)
+
+        if self.score_board.score > LEVEL_3_SCORE and self.paddle.size == 0.75:
+            self.paddle.reduce_size()
+        elif self.score_board.score > LEVEL_2_SCORE and self.paddle.size == 1:
+            self.paddle.reduce_size()
 
         for brick in self.bricks:
             if brick.check_ball_collision(self.ball):
