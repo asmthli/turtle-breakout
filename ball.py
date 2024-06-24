@@ -59,10 +59,19 @@ class Ball(t.Turtle):
                 self.paddle_bounce(paddle, momentum_coefficient=momentum_coefficient)
 
     def paddle_bounce(self, paddle, momentum_coefficient):
-        self.x_plane_bounce()
         speed_boost = momentum_coefficient * paddle.velocity
         if abs(self.x_velocity + speed_boost) <= SPEED_LIMIT:
             self.x_velocity += speed_boost
+
+        if self.ycor() > paddle.ycor():
+            self.x_plane_bounce()
+            self.sety(paddle.ycor() + paddle.pixel_height / 2 + self.pixel_height / 2)
+        elif self.xcor() < paddle.xcor():
+            self.y_plane_bounce()
+            self.setx(paddle.xcor() - paddle.pixel_width / 2 - self.pixel_width / 2)
+        elif self.xcor() > paddle.xcor():
+            self.y_plane_bounce()
+            self.setx(paddle.xcor() + paddle.pixel_width / 2 + self.pixel_width / 2)
 
     def x_plane_bounce(self):
         self.y_velocity *= -1
