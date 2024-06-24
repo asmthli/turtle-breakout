@@ -28,7 +28,6 @@ class Paddle(t.Turtle):
         self.goto(0, -250)
 
     def paddle_reset(self):
-        self.directions_pressed = []
         self.size = 1
         self.set_width(self.initial_width)
 

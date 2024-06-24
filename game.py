@@ -38,37 +38,39 @@ class Game:
 
         self.game_over_display = GameOverDisplay()
 
+        self.game_over = False
+
     def game_loop(self):
-        self.paddle.move(acceleration=0.35)
-        self.ball.move(self.screen.screen.window_width(),
-                       self.screen.screen.window_height())
-        self.ball.check_paddle_collision(self.paddle, 0.4)
+        if not self.game_over:
+            self.paddle.move(acceleration=0.35)
+            self.ball.move(self.screen.screen.window_width(),
+                           self.screen.screen.window_height())
+            self.ball.check_paddle_collision(self.paddle, 0.4)
 
-        if self.score_board.score > LEVEL_3_SCORE and self.paddle.size == 0.75:
-            self.paddle.reduce_size()
-        elif self.score_board.score > LEVEL_2_SCORE and self.paddle.size == 1:
-            self.paddle.reduce_size()
+            if self.score_board.score > LEVEL_3_SCORE and self.paddle.size == 0.75:
+                self.paddle.reduce_size()
+            elif self.score_board.score > LEVEL_2_SCORE and self.paddle.size == 1:
+                self.paddle.reduce_size()
 
-        for brick in self.bricks:
-            if brick.check_ball_collision(self.ball):
-                self.score_board.score += brick.points
-                brick.hide()
-                break
+            for brick in self.bricks:
+                if brick.check_ball_collision(self.ball):
+                    self.score_board.score += brick.points
+                    brick.hide()
+                    break
 
-        if self.ball.is_off_screen(self.screen.screen.window_height()):
-            self.life_counter.lives -= 1
-            self.ball.random_reset(self.screen.screen.window_width())
+            if self.ball.is_off_screen(self.screen.screen.window_height()):
+                self.life_counter.lives -= 1
+                self.ball.random_reset(self.screen.screen.window_width())
 
-        self.score_board.draw()
-        self.life_counter.draw()
+            self.score_board.draw()
+            self.life_counter.draw()
 
         if self.life_counter.lives == 2:
             self.game_over_display.show()
-            answer = self.screen.screen.textinput("Game over!", "Play again?: [y/n]")
-            if answer == "y":
+            self.game_over = True
+
+            if self.screen.space_bar_pressed:
                 self.reset()
-            else:
-                self.screen.screen.bye()
 
         self.screen.screen.update()
 
@@ -115,6 +117,8 @@ class Game:
 
         for brick in self.bricks:
             brick.reset()
+
+        self.game_over = False
 
 
 if __name__ == "__main__":

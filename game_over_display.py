@@ -10,6 +10,6 @@ class GameOverDisplay(t.Turtle):
 
     def show(self):
         self.clear()
-        self.write("  GAME OVER!",
+        self.write("         GAME OVER!\nPress Space to Play Again",
                    align="center",
                    font=("arial", 20, "normal"))
