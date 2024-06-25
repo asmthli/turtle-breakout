@@ -6,7 +6,6 @@ MOVE_INCREMENT = 2
 TOP_INITIAL_SPEED = 2
 SPEED_LIMIT = 4
 
-
 BASE_PIXEL_WIDTH = 20
 BASE_PIXEL_HEIGHT = 20
 
@@ -39,18 +38,18 @@ class Ball(t.Turtle):
         x_coord = self.xcor() + self.x_velocity * MOVE_INCREMENT
         y_coord = self.ycor() + self.y_velocity * MOVE_INCREMENT
 
-        # There is a bizarre bug - The window does not seem to show the full
-        # width of the screen in the positive direction. No div by 2 to account for this.
+        # 'Chrome' around the edge of the window obscures some of the game screen.
+        # OS dependent.
         if x_coord + self.pixel_width >= (screen_width // 2):
-            x_coord = (screen_width // 2) - self.pixel_width
-            self.y_plane_bounce()
+            x_coord = screen_width // 2 - self.pixel_width
+            self.x_velocity *= -1
         elif x_coord - self.pixel_width // 2 <= -1 * (screen_width // 2):
             x_coord = -1 * (screen_width // 2) + self.pixel_width // 2
-            self.y_plane_bounce()
+            self.x_velocity *= -1
 
         if y_coord + self.pixel_height / 2 >= (screen_height // 2):
             y_coord = (screen_height // 2) - self.pixel_height // 2
-            self.x_plane_bounce()
+            self.y_velocity *= -1
 
         self.goto(x_coord, y_coord)
 
@@ -68,17 +67,22 @@ class Ball(t.Turtle):
             self.x_velocity += speed_boost
 
         if self.ycor() > paddle.ycor():
-            self.x_plane_bounce()
-            self.sety(paddle.ycor() + paddle.pixel_height / 2 + self.pixel_height / 2)
+            self.x_plane_bounce(collision_object=paddle, approach="south")
         elif self.xcor() < paddle.xcor():
-            self.y_plane_bounce()
-            self.setx(paddle.xcor() - paddle.pixel_width / 2 - self.pixel_width / 2)
+            self.y_plane_bounce(collision_object=paddle, approach="west")
         elif self.xcor() > paddle.xcor():
-            self.y_plane_bounce()
-            self.setx(paddle.xcor() + paddle.pixel_width / 2 + self.pixel_width / 2)
+            self.y_plane_bounce(collision_object=paddle, approach="east")
 
-    def x_plane_bounce(self):
+    def x_plane_bounce(self, collision_object, approach):
+        if approach == "north":
+            self.sety(collision_object.ycor() - collision_object.pixel_height / 2 - self.pixel_height / 2)
+        elif approach == "south":
+            self.sety(collision_object.ycor() + collision_object.pixel_height / 2 + self.pixel_height / 2)
         self.y_velocity *= -1
 
-    def y_plane_bounce(self):
+    def y_plane_bounce(self, collision_object, approach):
+        if approach == "west":
+            self.setx(collision_object.xcor() - collision_object.pixel_width / 2 - self.pixel_width / 2)
+        elif approach == "east":
+            self.setx(collision_object.xcor() + collision_object.pixel_width / 2 + self.pixel_width / 2)
         self.x_velocity *= -1

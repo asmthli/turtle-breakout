@@ -39,17 +39,13 @@ class Brick(t.Turtle):
         if abs(self.xcor() - ball.xcor()) <= (self.pixel_width + ball.pixel_width) // 2:
             if abs(self.ycor() - ball.ycor()) <= (self.pixel_height + ball.pixel_height) // 2:
                 if ball.ycor() > self.ycor():
-                    ball.x_plane_bounce()
-                    ball.sety(self.ycor() + ball.pixel_height / 2 + self.pixel_height / 2)
+                    ball.x_plane_bounce(collision_object=self, approach="south")
                 elif ball.ycor() < self.ycor():
-                    ball.x_plane_bounce()
-                    ball.sety(self.ycor() - ball.pixel_height / 2 - self.pixel_height / 2)
+                    ball.x_plane_bounce(collision_object=self, approach="north")
                 elif ball.xcor() < self.xcor():
-                    ball.y_plane_bounce()
-                    ball.setx(self.xcor() - ball.pixel_width / 2 - self.pixel_width / 2)
+                    ball.y_plane_bounce(collision_object=self, approach="east")
                 elif ball.xcor() > self.xcor():
-                    ball.y_plane_bounce()
-                    ball.setx(self.xcor() + ball.pixel_width / 2 + self.pixel_width / 2)
+                    ball.y_plane_bounce(collision_object=self, approach="west")
                 return True
         return False
 
